@@ -16,22 +16,20 @@ class ProfileController extends Controller
 
     public function create(Request $request)
     {
-        // 以下を追記
         // Varidationを行う
         $this->validate($request, Profile::$rules);
-
-        $profile = new News;
+        $profile = new Profile;
         $form = $request->all();
 
-    // フォームから送信されてきた_tokenを削除する
-    unset($form['_token']);
+        // フォームから送信されてきた_tokenを削除する
+        unset($form['_token']);
 
-    // データベースに保存する
-    $profile->fill($form);
-    $profile->save();
+        // データベースに保存する
+        $profile->fill($form);
+        $profile->save();
+        
         return redirect('admin/profile/create');
     }
-
 
     
     public function edit()
