@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 // 以下を追記することでProfiles Modelが扱えるようになる
 use App\Profiles;
-use App\History;
+use App\Profhistory;
 use Carbon\Carbon;
 
 class ProfileController extends Controller
@@ -72,10 +72,10 @@ class ProfileController extends Controller
         $profiles->fill($profiles_form)->save();
 
         // 以下を追記
-        $history = new History;
-        $history->profiles_id = $profiles->id;
-        $history->edited_at = Carbon::now();
-        $history->save();
+        $profhistory = new Profhistory;
+        $profhistory->profiles_id = $profiles->id;
+        $profhistory->edited_at = Carbon::now();
+        $profhistory->save();
 
         return redirect('admin/profile/');
     }
