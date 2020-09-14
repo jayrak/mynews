@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 // 以下を追記することでProfiles Modelが扱えるようになる
 use App\Profiles;
+use App\History;
+use Carbon\Carbon;
 
 class ProfileController extends Controller
 {
@@ -19,7 +21,7 @@ class ProfileController extends Controller
     
         // Varidationを行う
         $this->validate($request, Profiles::$rules);
-        $profile = new Profiles;
+        $profiles = new Profiles;
         $form = $request->all();
 
         foreach ($form as $s) {
@@ -27,8 +29,8 @@ class ProfileController extends Controller
         }
 
         // データベースに保存する
-        $profile->fill($form);
-        $profile->save();
+        $profiles->fill($form);
+        $profiles->save();
 
         return redirect('admin/profile/create');
     }
@@ -49,11 +51,11 @@ class ProfileController extends Controller
     public function edit(Request $request)
     {
         // Profiles Modelからデータを取得する
-        $profile = Profiles::find($request->id);
-        if (empty($profile)) {
+        $profiles = Profiles::find($request->id);
+        if (empty($profiles)) {
         abort(404);    
         }
-        return view('admin.profile.edit', ['profile_form' => $profile]);
+        return view('admin.profile.edit', ['profiles_form' => $profiles]);
     }
 
     public function update(Request $request)
@@ -61,23 +63,29 @@ class ProfileController extends Controller
         // Validationをかける
         $this->validate($request, Profiles::$rules);
         // Profiles Modelからデータを取得する
-        $profile = Profiles::find($request->id);
+        $profiles = Profiles::find($request->id);
         // 送信されてきたフォームデータを格納する
-        $profile_form = $request->all();
-        unset($profile_form['_token']);
+        $profiles_form = $request->all();
+        unset($profiles_form['_token']);
 
         // 該当するデータを上書きして保存する
-        $profile->fill($profile_form)->save();
+        $profiles->fill($profiles_form)->save();
 
-        return redirect('admin/profile');
+        // 以下を追記
+        $history = new History;
+        $history->profiles_id = $profiles->id;
+        $history->edited_at = Carbon::now();
+        $history->save();
+
+        return redirect('admin/profile/');
     }
 
     public function delete(Request $request)
     {
         // 該当するProfiles Modelを取得
-        $profile = Profiles::find($request->id);
+        $profiles = Profiles::find($request->id);
         // 削除する
-        $profile->delete();
+        $profiles->delete();
         return redirect('admin/profile/');
     }
 }
