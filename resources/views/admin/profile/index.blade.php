@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="admin-profile col-md-12 mx-auto">
+            <div class="admin-profiles col-md-12 mx-auto">
                 <div class="row">
                     <table class="table table-dark">
                         <thead>
@@ -40,17 +40,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($posts as $profile)
+                            @foreach($posts as $profiles)
                                 <tr>
-                                    <th>{{ $profile->id }}</th>
-                                    <td>{{ Str::limit($profile->name, 20) }}</td>
-                                    <td>{{ Str::limit($profile->gender, 10) }}</td>
-                                    <td>{{ Str::limit($profile->hobby, 100) }}</td>
-                                    <td>{{ Str::limit($profile->introduction, 250) }}</td>
+                                    <th>{{ $profiles->id }}</th>
+                                    <td>{{ Str::limit($profiles->name, 20) }}</td>
+                                    <td>{{ Str::limit($profiles->gender, 10) }}</td>
+                                    <td>{{ Str::limit($profiles->hobby, 100) }}</td>
+                                    <td>{{ Str::limit($profiles->introduction, 250) }}</td>
                                     <td>
                                         <div>
-                                            <a href="{{ action('Admin\ProfileController@edit', ['id' => $profile->id]) }}">編集</a>
-                                            <a href="{{ action('Admin\ProfileController@delete', ['id' => $profile->id]) }}">削除</a>
+                                            <a href="{{ action('Admin\ProfileController@edit', ['id' => $profiles->id]) }}">編集</a>
+                                            <a href="{{ action('Admin\ProfileController@delete', ['id' => $profiles->id]) }}">削除</a>
                                         </div>
                                     </td>
                                 </tr>
