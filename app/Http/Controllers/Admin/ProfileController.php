@@ -24,10 +24,6 @@ class ProfileController extends Controller
         $profiles = new Profiles;
         $form = $request->all();
 
-        foreach ($form as $s) {
-            echo $s;
-        }
-
         // データベースに保存する
         $profiles->fill($form);
         $profiles->save();
